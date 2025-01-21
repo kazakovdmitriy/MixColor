@@ -29,6 +29,77 @@ struct RectangleGridView: View {
         }
     }
     
+    private let mixRules: [Set<String>: [String: Color]] = [
+        // Два цвета
+        ["Blue", "Red"]: [
+            "Purple": Color.purple
+        ],
+        ["Red", "Yellow"]: [
+            "Orange": Color.orange
+        ],
+        ["Blue", "Yellow"]: [
+            "Green": Color.green
+        ],
+        ["Green", "Red"]: [
+            "Brown": Color(red: 0.5, green: 0.25, blue: 0.0)
+        ],
+        ["Blue", "Green"]: [
+            "Cyan": Color.cyan
+        ],
+        ["Red", "White"]: [
+            "Pink": Color.pink
+        ],
+        ["Black", "White"]: [
+            "Gray": Color.gray
+        ],
+        ["Black", "Yellow"]: [
+            "Dark Yellow": Color(red: 0.5, green: 0.5, blue: 0.0)
+        ],
+        
+        // Три цвета
+        ["Blue", "Green", "Red"]: [
+            "Gray": Color.gray
+        ],
+        ["Blue", "Red", "Yellow"]: [
+            "Brown": Color(red: 0.6, green: 0.4, blue: 0.2)
+        ],
+        ["Blue", "Red", "White"]: [
+            "Lavender": Color(red: 0.8, green: 0.6, blue: 0.9)
+        ],
+        ["Blue", "White", "Yellow"]: [
+            "Sky Blue": Color(red: 0.7, green: 0.9, blue: 0.9)
+        ],
+        ["Black", "Red", "Yellow"]: [
+            "Dark Orange": Color(red: 0.5, green: 0.25, blue: 0.0)
+        ],
+        ["Blue", "Green", "White"]: [
+            "Aqua": Color(red: 0.5, green: 0.75, blue: 0.75)
+        ],
+        
+        // Четыре цвета
+        ["Blue", "Green", "Red", "Yellow"]: [
+            "Dark Brown": Color(red: 0.4, green: 0.3, blue: 0.2)
+        ],
+        ["Blue", "Red", "Yellow", "White"]: [
+            "Pale Brown": Color(red: 0.65, green: 0.5, blue: 0.4)
+        ],
+        ["Black", "Green", "Red", "White"]: [
+            "Muted Gray": Color(red: 0.5, green: 0.4, blue: 0.4)
+        ],
+        ["Blue", "Green", "White", "Yellow"]: [
+            "Bright Teal": Color(red: 0.6, green: 0.8, blue: 0.7)
+        ],
+        ["Black", "Red", "Blue", "White"]: [
+            "Dusty Purple": Color(red: 0.4, green: 0.2, blue: 0.3)
+        ],
+        ["Black", "Green", "Red", "Yellow"]: [
+            "Olive Brown": Color(red: 0.5, green: 0.4, blue: 0.2)
+        ],
+        ["Blue", "Cyan", "Red", "White"]: [
+            "Light Lavender": Color(red: 0.7, green: 0.6, blue: 0.9)
+        ]
+    ]
+    
     var body: some View {
         VStack {
             LazyVGrid(columns: columns, spacing: 10){
@@ -53,6 +124,7 @@ struct RectangleGridView: View {
             if columnsCount > 0 {
                 Text("=")
                     .font(.system(size: 20))
+                
                 ColorRectangleView(size: rectangleSize)
             }
         }
