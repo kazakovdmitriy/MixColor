@@ -7,47 +7,73 @@
 
 import SwiftUI
 
+struct DetailView: View {
+    var body: some View {
+        VStack {
+            Text("DetailView")
+                .font(.largeTitle)
+                .padding()
+            // Здесь можно добавить больше контента для детального представления
+        }
+        .navigationTitle("Detail") // Добавление заголовка для навигации
+    }
+}
+
 struct ContentView: View {
     
-    @State private var color1 = Color(red: 0.0, green: 1.0, blue: 0.0)
-    @State private var color2 = Color(red: 0.0, green: 0.0, blue: 1.0)
+    @State private var columnsCount = 2
+    @State private var isDetailViewPresented = false // Состояние для управления отображением модального окна
     
-    private var mixColor: Color {
-        Color.mix(color1, color2)
-    }
+    private let maxColumnsInGrid = 4
     
     var body: some View {
         NavigationStack {
             VStack {
-                ColorRectangle(
-                    size: 80,
-                    text: color1.getColorName(),
-                    color: color1
-                )
+                ColorGrid(columnsCount: $columnsCount)
+                
+                Spacer()
+                
+                HStack {
+                    Button("-") {
+                        if columnsCount > 0 {
+                            columnsCount -= 1
+                        } else {
+                            columnsCount = 0
+                        }
+                    }
+                    .font(.system(size: 20))
+                    
+                    Text("\(columnsCount)")
+                        .font(.system(size: 20))
+                    
+                    Button("+") {
+                        if columnsCount < maxColumnsInGrid {
+                            columnsCount += 1
+                        }
+                    }
+                    .font(.system(size: 20))
+                }
                 .padding()
                 
-                Text("+")
-                    .font(.system(size: 30))
-                
-                ColorRectangle(
-                    size: 80,
-                    text: color2.getColorName(),
-                    color: color2
-                )
+                // Кнопка для открытия модального окна
+                Button("Open Detail") {
+                    isDetailViewPresented = true
+                }
+                .font(.headline)
                 .padding()
-                
-                Text("=")
-                    .font(.system(size: 30))
-                
-                ColorRectangle(
-                    size: 80,
-                    text: mixColor.getColorName(),
-                    color: mixColor
-                )
-                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
             }
-            .navigationTitle("Color Mixer")
-            .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $isDetailViewPresented) {
+                NavigationView {
+                    DetailView()
+                        .navigationBarItems(trailing: Button("Готово") {
+                            isDetailViewPresented = false
+                        })
+                }
+                .presentationDetents([.medium])
+            }
         }
     }
 }
