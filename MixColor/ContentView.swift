@@ -7,29 +7,38 @@
 
 import SwiftUI
 
-struct DetailView: View {
-    var body: some View {
-        VStack {
-            Text("DetailView")
-                .font(.largeTitle)
-                .padding()
-            // Здесь можно добавить больше контента для детального представления
-        }
-        .navigationTitle("Detail") // Добавление заголовка для навигации
-    }
-}
 
 struct ContentView: View {
     
     @State private var columnsCount = 2
-    @State private var isDetailViewPresented = false // Состояние для управления отображением модального окна
+    @State private var colors: [Color]
+    @State private var colorsName: [String]
+    @State private var selectedRectangleIndex: Int = 0
+    @State private var isDetailViewPresented = false
     
     private let maxColumnsInGrid = 4
+    
+    init() {
+        _colors = State(initialValue: Array(
+            repeating: Color.black,
+            count: 10)
+        )
+        _colorsName = State(initialValue: Array(
+            repeating: "Black",
+            count: 10)
+        )
+    }
     
     var body: some View {
         NavigationStack {
             VStack {
-                ColorGrid(columnsCount: $columnsCount)
+                RectangleGridView(
+                    columnsCount: $columnsCount,
+                    colors: $colors,
+                    colorsName: $colorsName,
+                    selectedRectangleIndex: $selectedRectangleIndex,
+                    isDetailViewPresented: $isDetailViewPresented
+                )
                 
                 Spacer()
                 
@@ -54,23 +63,14 @@ struct ContentView: View {
                     .font(.system(size: 20))
                 }
                 .padding()
-                
-                // Кнопка для открытия модального окна
-                Button("Open Detail") {
-                    isDetailViewPresented = true
-                }
-                .font(.headline)
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(8)
             }
             .sheet(isPresented: $isDetailViewPresented) {
                 NavigationView {
-                    DetailView()
-                        .navigationBarItems(trailing: Button("Готово") {
-                            isDetailViewPresented = false
-                        })
+                    ChoiseColorView(colors: $colors,
+                                    colorsName: $colorsName,
+                                    selectedIndex: $selectedRectangleIndex,
+                                    isDetailViewPresented: $isDetailViewPresented
+                    )
                 }
                 .presentationDetents([.medium])
             }

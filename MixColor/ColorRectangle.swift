@@ -15,7 +15,7 @@ enum ColorRectangleSizes: CGFloat {
     case xxl = 100
 }
 
-struct ColorRectangle: View {
+struct ColorRectangleView: View {
     
     var size: ColorRectangleSizes = .s
     var text = "Black"
@@ -38,10 +38,11 @@ struct ColorRectangle: View {
             Rectangle()
                 .fill(color)
                 .frame(width: size.rawValue, height: size.rawValue)
+                .border(Color.black, width: color == Color.white ? 1 : 0)
         }
     }
 }
 
 #Preview {
-    ColorRectangle(size: .l)
+    ColorRectangleView(size: .l)
 }
